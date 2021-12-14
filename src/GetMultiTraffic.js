@@ -4,10 +4,8 @@ import './CSS/GetMultiTraffic.css';
 import { FaCar, FaLocationArrow } from 'react-icons/fa'
 
 const GetMultiTraffic = (props) => {
-    //수정한 부분 1202/0246
-    const { dataSumList, detail, cityList } = props
-    console.log(props)
 
+    const { dataSumList, detail, cityList } = props
 
     function timeCal(t) {
         let minutes = 0;
