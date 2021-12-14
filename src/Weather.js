@@ -12,7 +12,7 @@ const Weather = (props) => {
   const updownCode = props.updownCode
   const data = props.weather
 
-  let wetherBack = 'lightblue'
+  let weatherBack = 'lightblue'
 
 
   const weatherUI =
@@ -42,7 +42,7 @@ const Weather = (props) => {
               </div>
 
               {/* <div className="col-md-4 p-3 d-none d-md-block border rounded overflow-hidden shadow-sm" style={{ backgroundColor:'lightblue'}}> */}
-              <div className="col-md-4 p-3 d-none d-md-block border rounded overflow-hidden shadow-sm" style={{ backgroundColor: (data.weatherContents === '맑음' ? wetherBack = 'lightblue' : wetherBack = 'lightgray') }}>
+              <div className="col-md-4 p-3 d-none d-md-block border rounded overflow-hidden shadow-sm" style={{ backgroundColor: (data.weatherContents === '맑음' ? weatherBack = 'lightblue' : weatherBack = 'lightgray') }}>
                 <h6> Whether </h6>
                 <div className='card mx-auto' style={{ backgroundColor: 'lightblue' }}>
                   {/* <h5 style={{backgroundColor:'lightblue'}}> {dat[i].weatherContents}</h5> */}

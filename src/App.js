@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navibar, DaeMoon, Footer } from './frame.js';
@@ -7,20 +6,18 @@ import { UserInput } from './UserInput.js';
 import { Weather } from './Weather.js';
 import './CSS/Weather.css';
 import './CSS/App.css';
-import { Message } from './Message.js';
-import './CSS/Message.css'
-import Loading from './Loading'
-import { RepFood } from './RepFood'
-import { Input } from './Input'
-import { GetMultiTraffic } from './GetMultiTraffic'
+import { Message } from './Message';
+import './CSS/Message.css';
+import Loading from './Loading';
+import { RepFood } from './RepFood';
+import { Input } from './Input';
+import { GetMultiTraffic } from './GetMultiTraffic';
 
 function App() {
-
 
   // 사용자 입력값 출발지와 도착지  
   const [start, setStart] = useState('서울');
   const [end, setEnd] = useState('부산');
-
 
   // 한울
   const [message, setMessage] = useState([]);             // 메세지 배열 realTimeSMSList
@@ -45,10 +42,10 @@ function App() {
   const [srtCityNum, setSrtCityNum] = useState('0')
   const [endCityNum, setEndCityNum] = useState('3')
 
+
   // 1206 추가
   const [nowDate, setNowDate] = useState('20211201')
   // const [nowTime, setNowTime] = useState('00')
-
 
 
   const handleClick = (e) => {
@@ -58,7 +55,6 @@ function App() {
     console.log(name, value)
     console.log(routeCode, direction)
   }
-
 
   // 성우
 
@@ -77,7 +73,6 @@ function App() {
   const [dataSumList, setDataSumList] = useState([])
   const [detail, setDetail] = useState([])
   const [cityList, setCityList] = useState([])
-
 
 
   // 인증키
@@ -141,7 +136,7 @@ function App() {
     const ascORdesc = sortBy
     ascORdesc !== 'desc' ? setSortBy('desc') : setSortBy('asc')
 
-    console.log(sortBy)
+    // console.log(sortBy)
   }
 
 
@@ -325,36 +320,36 @@ function App() {
 
   // 상재 useEffect
   useEffect(async () => {
-    
+
     // 1206 날씨정보 업데이트
-      const now = new Date();
+    const now = new Date();
       
-      let year = now.getFullYear();
-      let month = now.getMonth() + 1;
-      let day = now.getDate();
-      // let hour = now.getHours();
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    let day = now.getDate();
+    // let hour = now.getHours();
 
-      // 날짜가 한자리수일때 앞에 0을 붙임
-      if(day.toString().length === 1) {
-        day = '0' + day.toString();
-      } else {
-        day = day.toString();
-      }
+    // 날짜가 한자리수일때 앞에 0을 붙임
+    if(day.toString().length === 1) {
+      day = '0' + day.toString();
+    } else {
+      day = day.toString();
+    }
 
-      // // 시간이 한자리수일때 앞에 9을 붙임
-      // if(hour.toString().length === 1) {
-      //   hour = '0' + hour.toString();
-      // } else {
-      //   hour = hour.toString();
-      // }
+    // // 시간이 한자리수일때 앞에 9을 붙임
+    // if(hour.toString().length === 1) {
+    //   hour = '0' + hour.toString();
+    // } else {
+    //   hour = hour.toString();
+    // }
 
-      const ymd = year.toString() + month.toString() + day
-      setNowDate(ymd)
-      // setNowTime(hour);
-      
+    const ymd = year.toString() + month.toString() + day
+    setNowDate(ymd)
+    // setNowTime(hour);
+
     const url = `https://data.ex.co.kr/openapi/restinfo/restWeatherList?key=${API_KEY}&type=json&sdate=${nowDate}&stdHour=00`
     try {
-      console.log(url);
+      // console.log(url);
       const res = await axios.get(url)
       const data = res.data.list
 
@@ -362,7 +357,6 @@ function App() {
       // if(data.length === 0) {
       //   // setNowTime('00')
       // }
-      
       setWeather(data)
     } catch {
       console.log('Weather ERROR')
@@ -489,6 +483,11 @@ function App() {
           }
         }
       }
+      for (let i = 1; i < tempDataList.length; i++) {
+        if (tempDataList[i].startUnitCode === tempDataList[i - 1].startUnitCode && tempDataList[i].endUnitCode === tempDataList[i - 1].endUnitCode) {
+          tempDataList.splice(i, 1);
+        }
+      }
       for (let i = 0; i < startList.code.length; i++) {
         tempCityList.push({ 'sCity': startList.name[i], 'eCity': endList.name[i], 'route': startList.route })
       }
@@ -522,6 +521,7 @@ function App() {
         />
 
         {/* 예상도착시간 */}
+
         {trafficLoading ? <Loading /> :
           <GetMultiTraffic
             dataSumList={dataSumList}
