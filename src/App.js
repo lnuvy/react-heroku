@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navibar, DaeMoon, Footer } from './frame.js';
@@ -15,9 +16,11 @@ import { GetMultiTraffic } from './GetMultiTraffic';
 
 function App() {
 
+
   // 사용자 입력값 출발지와 도착지  
   const [start, setStart] = useState('서울');
   const [end, setEnd] = useState('부산');
+
 
   // 한울
   const [message, setMessage] = useState([]);             // 메세지 배열 realTimeSMSList
@@ -27,7 +30,7 @@ function App() {
 
   // 성빈
   const [foodLoading, setFoodLoading] = useState(true)
-  const [routeCode, setRouteCode] = useState('')
+  const [routeCode, setRouteCode] = useState('0010')
   const [routeCode2, setRouteCode2] = useState('')
   const [foodData, setFoodData] = useState([])
   const [numOfRows_s, setNumOfRows_s] = useState(99)
@@ -42,24 +45,23 @@ function App() {
   const [srtCityNum, setSrtCityNum] = useState('0')
   const [endCityNum, setEndCityNum] = useState('3')
 
-
   // 1206 추가
   const [nowDate, setNowDate] = useState('20211201')
   // const [nowTime, setNowTime] = useState('00')
+
 
 
   const handleClick = (e) => {
     const { name, value } = e.target
     setRouteCode(name)
     setDirection(value)
-    console.log(name, value)
-    console.log(routeCode, direction)
+    // console.log(name, value)
+    // console.log(routeCode, direction)
   }
 
+
   // 성우
-
   const [trafficLoading, setTrafficLoading] = useState(true);
-
   const [startList, setStartList] = useState({
     code: [],
     name: [],
@@ -74,15 +76,14 @@ function App() {
   const [detail, setDetail] = useState([])
   const [cityList, setCityList] = useState([])
 
-
-  // 인증키
-  const API_KEY = process.env.REACT_APP_API_KEY
+  // 인증키 ** 12/14 인증키 암호화 적용안됨 (undefined)
+  // const API_KEY = process.env.REACT_APP_API_KEY
 
 
   // 한울 useEffect
   useEffect(async () => {
 
-    const url = `http://data.ex.co.kr/openapi/burstInfo/realTimeSms?key=${API_KEY}&type=json&sortType=${sortBy}&numOfRows=5&&pagingYn=Y&pageNo=`
+    const url = `http://data.ex.co.kr/openapi/burstInfo/realTimeSms?key=4047313059&type=json&sortType=${sortBy}&numOfRows=5&&pagingYn=Y&pageNo=`
 
     try {
 
@@ -136,19 +137,20 @@ function App() {
     const ascORdesc = sortBy
     ascORdesc !== 'desc' ? setSortBy('desc') : setSortBy('asc')
 
-    // console.log(sortBy)
+    console.log(sortBy)
   }
 
 
 
   // 성빈 useEffect
   useEffect(async () => {
-    const url = `http://data.ex.co.kr/openapi/business/representFoodServiceArea?key=${API_KEY}&type=json&routeCode=${routeCode}&numOfRows=${numOfRows_s}&pageNo=`
+    const url = `http://data.ex.co.kr/openapi/business/representFoodServiceArea?key=4047313059&type=json&routeCode=${routeCode}&numOfRows=${numOfRows_s}&pageNo=`
     const temp = [] // API를 여러번 불러와서 데이터를 저장하기 위한 빈 배열
     try {
       for (var i = 0; i < 3; i++) {
         const res = await axios.get(url + (i + 1).toString())
         const data = res.data.list
+        // console.log(data);
         temp.push(...data)
       }
 
@@ -159,6 +161,7 @@ function App() {
       console.log('Food ERROR', err)
     }
   }, [routeCode]) // 도로 코드가 바뀔때 마다 새로 불러옴
+
   // 성빈 useEffect 2
   useEffect(async () => {
     switch (start) {
@@ -320,34 +323,33 @@ function App() {
 
   // 상재 useEffect
   useEffect(async () => {
-
     // 1206 날씨정보 업데이트
-    const now = new Date();
+      const now = new Date();
       
-    let year = now.getFullYear();
-    let month = now.getMonth() + 1;
-    let day = now.getDate();
-    // let hour = now.getHours();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+      // let hour = now.getHours();
 
-    // 날짜가 한자리수일때 앞에 0을 붙임
-    if(day.toString().length === 1) {
-      day = '0' + day.toString();
-    } else {
-      day = day.toString();
-    }
+      // 날짜가 한자리수일때 앞에 0을 붙임
+      if(day.toString().length === 1) {
+        day = '0' + day.toString();
+      } else {
+        day = day.toString();
+      }
 
-    // // 시간이 한자리수일때 앞에 9을 붙임
-    // if(hour.toString().length === 1) {
-    //   hour = '0' + hour.toString();
-    // } else {
-    //   hour = hour.toString();
-    // }
+      // // 시간이 한자리수일때 앞에 9을 붙임
+      // if(hour.toString().length === 1) {
+      //   hour = '0' + hour.toString();
+      // } else {
+      //   hour = hour.toString();
+      // }
 
-    const ymd = year.toString() + month.toString() + day
-    setNowDate(ymd)
-    // setNowTime(hour);
-
-    const url = `https://data.ex.co.kr/openapi/restinfo/restWeatherList?key=${API_KEY}&type=json&sdate=${nowDate}&stdHour=00`
+      const ymd = year.toString() + month.toString() + day
+      setNowDate(ymd)
+      // setNowTime(hour);
+      
+    const url = `https://data.ex.co.kr/openapi/restinfo/restWeatherList?key=4047313059&type=json&sdate=${nowDate}&stdHour=00`
     try {
       // console.log(url);
       const res = await axios.get(url)
@@ -357,6 +359,7 @@ function App() {
       // if(data.length === 0) {
       //   // setNowTime('00')
       // }
+      
       setWeather(data)
     } catch {
       console.log('Weather ERROR')
@@ -483,9 +486,9 @@ function App() {
           }
         }
       }
-      for (let i = 1; i < tempDataList.length; i++) {
-        if (tempDataList[i].startUnitCode === tempDataList[i - 1].startUnitCode && tempDataList[i].endUnitCode === tempDataList[i - 1].endUnitCode) {
-          tempDataList.splice(i, 1);
+      for (let i = 1; i < tempDataList.length; i++){
+        if (tempDataList[i].startUnitCode ===tempDataList[i-1].startUnitCode && tempDataList[i].endUnitCode ===tempDataList[i-1].endUnitCode){
+          tempDataList.splice(i,1);
         }
       }
       for (let i = 0; i < startList.code.length; i++) {
@@ -521,7 +524,6 @@ function App() {
         />
 
         {/* 예상도착시간 */}
-
         {trafficLoading ? <Loading /> :
           <GetMultiTraffic
             dataSumList={dataSumList}
